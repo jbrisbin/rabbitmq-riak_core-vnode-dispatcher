@@ -65,10 +65,10 @@ handle_cast(Msg, State) ->
   {noreply, State}.
 
 handle_info(#'basic.cancel_ok'{ consumer_tag = _Tag }, State) ->
-	{noreply, State};
+  {noreply, State};
 
 handle_info(#'basic.consume_ok'{ consumer_tag = _Tag }, State) ->
-	{noreply, State};
+  {noreply, State};
 
 handle_info(D = {#'basic.deliver'{ delivery_tag = DeliveryTag }, 
   #amqp_msg { 
