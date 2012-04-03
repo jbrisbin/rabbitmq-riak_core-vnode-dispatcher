@@ -20,8 +20,6 @@ start_link() ->
   gen_server2:start_link({local, ?MODULE}, ?MODULE, [], [{timeout, infinity}]).
 
 init([]) ->
-  process_flag(trap_exit, true),
-
   AmqpParams = #amqp_params_network {
     username = <<"guest">>,
     password = <<"guest">>,
@@ -111,9 +109,9 @@ handle_info(Msg, State) ->
   io:format("handle_info: ~p ~p~n", [Msg, State]),
   {noreply, State}.
 
-terminate(Reason, State = #state{ queue = Q, client = _Client, channel = Channel }) ->
+terminate(_Reason, _State = #state{ queue = Q, client = _Client, channel = Channel }) ->
   amqp_channel:call(Channel, #'queue.delete'{ queue = Q }),
-  io:format("terminate: ~p ~p~n", [Reason, State]),
+  % io:format("terminate: ~p ~p~n", [Reason, State]),
   ok.
 
 code_change(_OldVsn, State, _Extra) ->
